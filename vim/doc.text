@@ -1,0 +1,231 @@
+- NAVIGATION
+
+h: left ⬅️, j: down ⬇️, k: up ⬆️, l: right ➡️
+ctrl-f: forward ▶️
+ctrl-b: backward ◀️
+w: moves the cursor to the next word
+W: same as w but ignoring puntuation
+b: moves the cursor to the previous word
+B: same as b but ignoring puntuation
+0: moves the cursor to the beginning of line
+^: moves the cursor to the first caracter of the line
+$: moves the cursor to the end of the line
+<n>gg: go to line, n is a variable with the value of the required line, if no line number is specified moves the cursor to the first line of the file 
+<n>G: same as <n>gg, if no line number is specified moves the cursor to the end line of the file
+
+-- DELETE
+
+x: deletes the caracter on cursor position
+X: deletes the caracter before the cursor position
+dw: "delete word" deletes from current position to the next word
+<n>dw: deletes n words
+d<n>w: deletes n words
+d<l|h>: same as x and X respectively
+d<j|k>: deletes the current line and down or up line respectively
+d<0|$>: deletes from current cursor position to beginning or end of line respectively
+D: deletes from current cursor position to end of line
+dd: deletes the current line
+<n>dd deletes n lines
+
+-- CUT - COPY - PASTE
+
+dd: cut the current line and put in the unamed or default register
+p: put the text in unamed register in the next line of cursor position
+P: same as p but paste the text on the previous line of cursor position
+y: copy text
+<n>yy: copy n lines
+u: undo
+ctrl-r: redo
+"+yy: copy text to + register
+:set clipboard=unamedplus
+
+-- REGISTERS
+
+the unamed register store the deleted text and the 0 register the yanked text
+p: paste the text from the unamed register
+"0p: put the text from the 0 register
+"<n>: put the text from the n register
+"_: this is the black hole register
+"ayy: copy the current line in a named 'a' register, there is a 26 named register form a to z
+"Ayy: append text to the 'a' register
+:reg: show registers
+:reg <n>: shows the n register
+
+-- TRANSFORMING AND SUBSTITUTING
+
+I: move cursor to the first not blank character and enter into insert mode
+a: enter into insert mode but moves the cursor after the current position
+A: enter into insert mode but moved the cursor at the end of the line
+o: inserts a new line below the current cursor line and enter into insert mode
+O: inserts a new line above the current cursor position and enter into current cursor position
+80(i*): write 80 *
+5(o#): write 5 lines with # as first character
+R: enter into replace mode
+r: replace one character
+cw: change a word
+"acw: change a word and storage in a register
+c$: change text from current cursor position to the end of the line
+C: same as c$
+cc: change the test of current line
+~: uppercase the letter on current cursor position
+g~w: uppercase all word at current cursor position
+g~$: uppercase entire current line
+g~~: same as g~$
+gUw: uppercase current word no matters current case of letters
+gUU: uppercase current line no matters current case of letters
+guw: lowercase current word
+guu: lowercase current line
+J: join current lien with next line
+gJ: join current line with next without adding space at the end of the first line
+3J: join 3 lines from current
+
+-- SEARCH - FIND - REPLACE
+
+f<n>: find next n in current line
+F<n>: find previous n in current line
+;: after a search command repeat the search in forward direction
+,: after a search command repeat the search in backward direction
+t<n>: find n in forward direction and place the cursor before the searched charcater
+T<n>: find n in backward direction and place the cursor after the searched character
+dtw: deletes from current cursor position to the next w charecter
+df : deletes from current cursor position to the next space charcater included
+/<text>: search for text in forward direction
+n: search the next ocurrency of / search
+N: search the previous ocurrency of / search
+.: repeat the last command
+?<n>: find n in backward direction
+*: search for a cursor position word forward direction
+#: search for a cursro position word backward direction
+d/this: deletes form current cursor position to this word
+"ay/z: yank the text from current position to z
+(:s/old/new/g) commad to replace all ocurrences of old word with new word in a line (. = current line)
+(:1,5s/old/new/g) same as previous command but in first 5 lines only
+(:%s/old/new/g) same as previous command but in all lines of file (% = 1,$)
+(:/PATTERN-1/,/PATTERN-2/s/old/new/g) same as previous command but in a range of /PATTERN-1/ to /PATTERN-2/
+(:%s#old#new#g) same as previous command but with a diferent separator in this case is #
+
+-- TEXT OBJECTS
+
+daw: (delete a word) deletes the word of cursor potition
+diw: (delete inner word) same as daw but mantain space
+das: (delete a sentence) deletes a entire sentence in cursor position
+dis: (delete inner sentence) same as das but mantain space
+dap: (delete a paragraph) deletes a paragraph in cursor position
+dip: (delete inner paragraph) same as dap but mantain breakline
+ci]: deletes all inner []
+da]: deleltes all inner [] and the brackets too
+ya>: yank text inside <>
+cit: change the text inside a tag <>
+cat: change a tag an it's content 
+dit: deletes the text inside a tag <>
+ciB: change text insode block {}
+caB: change a block an it's content
+ca": change text inside "
+ca': change text inside '
+ca`: change text inside `
+
+-- MACROS
+
+qa: start recording in a register, q when recording ends
+@a: run the record stored in a register
+@@: repeat the las used macro
+5@a: executes macro recorded in a register 5 times
+qA: append to macro recorded in a register
+(27,35normal @a): executes the macro stored on a register in a range of 27 to 35 in normal mode
+let @d = '': to save a macro in .vimrc
+
+-- VISUAL MODE
+
+v: enter in visual mode
+V: enter in line visual mode
+o: moves the cursor to the other side of selection in visual mode
+~: switch case
+c: change
+d: delete
+y: yank
+r: replace
+x: delete
+I: insert
+A: append
+J: join
+u: make lowercase
+U: make uppercase
+>: shift right
+<: shift left
+ctrl+v: enter in visual block mode
+O: moves the cursor to the other corner of the same line selection in visual block mode
+gv: reselect last selected area
+(:set shiftwidth?): shows the shift size
+(:set tabstop?): tab stop
+(:set list); shows caracters instead tabs
+(:set spandtab): use spaces instead tabs
+:: starts command mode
+:center n: center the selection, n is an optional parameter to specify the line size
+:ce: same as :center
+:left: left the text
+:le<n>: same as :left, n is an optional parameter to specify size
+:right: right the text
+:ri<n>: same as :right, n is an optionalparameter to specify size
+
+-- COMMANDS
+
+(:w): saves the file
+(:wq): saves and quit from file
+(:q): quites the file
+(:q!): quites the file without save the changes
+(:z): moves te text up screen to cursor position
+(:<n>): go to line n
+(:$): go to the end line of file
+ctrl-g: show number of file lines and cursor current position
+ctrl-G: verbose for ctrl + g
+(:set ruler): ruler on
+(:set noruler): ruler off
+(:set ruler!): toggle ruler
+(:help) vim documentatio vim documentation
+(:help <command>) gets information for an specific command
+ctrl-o, ctrl-i, ctrl-]: navigation in documentation
+ctrl-w ctrl-w: switch between documentation and open file
+ctrl-d autocomplete commands
+(:set is): incremental search 
+(:set hls): highlighted search
+
+-- CONFIG
+
+:h config: shows help for config option
+:e: save as
+:h option-list: shows all options
+:options: shows avalaible options and documentation
+": comments in .vimrc
+
+-- BUFFERS
+
+:ls: list buffers
+:buffers: same as :ls
+:b <name | number>: open buffer by name or number
+:bnext: move to the next buffer
+:bn: same as bnext
+:bprevious: move to the previos buffer
+:bp: same as bprevious
+:bfirst: move to the first buffer
+:bf: same as bfirst
+:blast: move to the last buffer
+:bl: same as blast
+:^: move to the previous buffer in history
+:bd n: delete n buffer
+:e: open a file in a buffer
+:qall!: close all buffers without save
+:wall: save all buffers
+:badd: add a buffer silently
+:bufdo set nu: line number in all buffers
+:bufdo %s/#/@/g | w: sustitution # for @ in all buffers and write the change
+:E: open file explorer
+:sp,:split: split the window
+:vs:vsplit: split window vertically
+:on:only: close all other windows
+:ba:ball: open all buffers in diferents windows
+:windo %s/@/#/g sustitution @ for # in all windows
+
+-- PLUGINS
+
+vimawesome.com
+:packadd {plugin-directory-name}: load a plugin
